@@ -63,7 +63,52 @@ struct PokerHand {
     }
 
     int getHandValue(){
-        
+    	    
+    }
+
+    bool royalFlush(){
+    	if(this->has())
+    }
+
+	bool straighFlush(){
+
+	}
+
+	bool fourOfAKind(){
+
+	}
+
+	bool FullHouse(){
+
+	}
+
+	bool flush(){
+
+	}
+
+	bool straight(){
+
+	}
+
+	bool threeOfAKind(){
+
+	}
+
+	bool twoPair(){
+
+	}
+
+	bool Pair(){
+
+	}
+
+    bool has(int value, int suit){
+    	for(int i = 0;i<hand.size();i++){
+    		if(value == hand[i].nunmber && suit == hand[i].suit){
+    			return true;
+    		}
+    	}
+    return false;
     }
 };
 
