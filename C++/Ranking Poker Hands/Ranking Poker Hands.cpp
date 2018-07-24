@@ -1,5 +1,5 @@
-using namespace std;
 
+using namespace std;
 struct card{
     int number;
     /* 0 - hearts
@@ -55,8 +55,8 @@ struct PokerHand {
         for(int i =0;i<14;i++){
             if(pokerhand[i] == ' '){
                 card tempo;
-                tempo.suits = getSuitFromString(pokerhand[1]);
-                tempo.number = getNumberFromString(pokerhand[0]);
+                tempo.suits = getSuitFromString(pokerhand[i-1]);
+                tempo.number = getNumberFromString(pokerhand[i-2]);
                 hand.push_back(tempo);
                 temp = "";
             }
@@ -64,8 +64,9 @@ struct PokerHand {
                 temp += pokerhand[i];
         }
         card tempo;
-        tempo.suits = getSuitFromString(pokerhand[1]);
-        tempo.number = getNumberFromString(pokerhand[0]);
+        //last pos are 13 and 12
+        tempo.suits = getSuitFromString(pokerhand[13]);
+        tempo.number = getNumberFromString(pokerhand[12]);
         hand.push_back(tempo);
     }
 
@@ -120,7 +121,7 @@ struct PokerHand {
     }
 
     bool flush(){
-        
+
     }
 
     bool straight(){
@@ -184,6 +185,18 @@ struct PokerHand {
         }
         return false;
     }
+
+    void sort(){
+        for(int i = 0;i<hand.size();i++){
+            for(int j = i+1;j<hand.size();j++){
+                if(hand[i].number > hand[j].number){
+                    card temp = hand[i];
+                    hand[i] = hand[j];
+                    hand[j] = temp;
+                }
+            }
+        }
+    }
 };
 
 enum class Result { Win, Loss, Tie };
@@ -193,11 +206,6 @@ Result compare (const PokerHand &player, const PokerHand &opponent) {
 
 
     return Result::Loss;
-}
-
-int main(){
-    compare("2H 3H 4H 5H 6H", "KS AS TS QS JS");
-    return 0;
 }
 
 
