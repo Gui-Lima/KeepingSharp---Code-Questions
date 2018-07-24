@@ -8,6 +8,13 @@ struct card{
      * 3 - clubs
      */
     int suits;
+
+    bool equals(card toCompare){
+        if(toCompare.number == this->number && toCompare.suits == this->suits){
+            return true;
+        }
+        return false;
+    }
 };
 
 int getSuitFromString(char suit){
@@ -63,52 +70,119 @@ struct PokerHand {
     }
 
     int getHandValue(){
-    	    
+
     }
 
     bool royalFlush(){
-    	if(this->has())
+        if(this->has(10, 0) && this->has(11, 0) && this->has(12, 0) && this->has(13, 0) && this->has(14, 0) ){
+            return true;
+        }
+        if(this->has(10, 1) && this->has(11, 1) && this->has(12, 1) && this->has(13, 1) && this->has(14, 1) ){
+            return true;
+        }
+        if(this->has(10, 2) && this->has(11, 2) && this->has(12, 2) && this->has(13, 2) && this->has(14, 2) ){
+            return true;
+        }
+        if(this->has(10, 3) && this->has(11, 3) && this->has(12, 3) && this->has(13, 3) && this->has(14, 3) ){
+            return true;
+        }
+        return false;
     }
 
-	bool straighFlush(){
+    bool straighFlush(){
 
-	}
+    }
 
-	bool fourOfAKind(){
+    bool fourOfAKind(){
+        int count1 =0 ;
+        int count2 = 0;
+        card temp1 = hand[0];
+        card temp2 = hand[1];
+        for (auto &i : hand) {
+            if(i.equals(temp1)){
+                count1++;
+            }
+            if(i.equals(temp2)){
+                count2++;
+            }
+        }
+        if(count1 == 4 || count2 == 4){
+            return true;
+        }
+        return false;
+    }
 
-	}
+    bool FullHouse(){
+        if(this->threeOfAKind() && this->Pair()){
+            return true;
+        }
+        return false;
+    }
 
-	bool FullHouse(){
+    bool flush(){
+        
+    }
 
-	}
+    bool straight(){
 
-	bool flush(){
+    }
 
-	}
+    bool threeOfAKind(){
+        int count1 =0 ;
+        int count2 = 0;
+        int count3 = 0;
+        card temp1 = hand[0];
+        card temp2 = hand[1];
+        card temp3 = hand[2];
+        for (auto &i : hand) {
+            if(i.equals(temp1)){
+                count1++;
+            }
+            if(i.equals(temp2)){
+                count2++;
+            }
+            if(i.equals(temp3)){
+                count3++;
+            }
+        }
+        if(count1 == 3 || count2 == 3 || count3 == 3){
+            return true;
+        }
+        return false;
+    }
 
-	bool straight(){
+    bool twoPair(){
 
-	}
+    }
 
-	bool threeOfAKind(){
+    bool Pair(){
+        for(int i =0;i<hand.size();i++){
+            for(int j = i+1;j<hand.size();j++){
+                if(hand[i].equals(hand[j])){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
-	}
 
-	bool twoPair(){
-
-	}
-
-	bool Pair(){
-
-	}
+    bool hasAnySuit(int value){
+        for(int i = 0;i<hand.size();i++){
+            if(value == hand[i].number){
+                return true;
+            }
+        }
+        return false;
+    }
 
     bool has(int value, int suit){
-    	for(int i = 0;i<hand.size();i++){
-    		if(value == hand[i].nunmber && suit == hand[i].suit){
-    			return true;
-    		}
-    	}
-    return false;
+        for(int i = 0;i<hand.size();i++){
+            if(value == hand[i].number && suit == hand[i].suits){
+                return true;
+            }
+        }
+        return false;
     }
 };
 
@@ -125,5 +199,7 @@ int main(){
     compare("2H 3H 4H 5H 6H", "KS AS TS QS JS");
     return 0;
 }
+
+
 
 
