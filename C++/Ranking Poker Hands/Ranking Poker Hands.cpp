@@ -1,5 +1,10 @@
 
+#include <iostream>
+#include "vector"
+#include "string"
+
 using namespace std;
+
 struct card{
     int number;
     /* 0 - hearts
@@ -49,6 +54,19 @@ int getNumberFromString(char number){
 }
 
 struct PokerHand {
+
+    void sort(){
+        for(int i = 0;i<hand.size();i++){
+            for(int j = i+1;j<hand.size();j++){
+                if(hand[i].number > hand[j].number){
+                    card temp = hand[i];
+                    hand[i] = hand[j];
+                    hand[j] = temp;
+                }
+            }
+        }
+    }
+
     vector<card> hand;
     PokerHand (const char* pokerhand) {
         string temp = "";
@@ -68,6 +86,7 @@ struct PokerHand {
         tempo.suits = getSuitFromString(pokerhand[13]);
         tempo.number = getNumberFromString(pokerhand[12]);
         hand.push_back(tempo);
+        this->sort();
     }
 
     int getHandValue(){
@@ -153,20 +172,28 @@ struct PokerHand {
     }
 
     bool twoPair(){
-
+        int pairs = 0;
+        for(int i =0;i<hand.size() - 1;i++){
+            card temp = hand[i];
+            card temp2 = hand[i+1];
+            if(temp.number == temp2.number){
+                pairs++;
+            }
+        }
+        return pairs==1;
     }
 
     bool Pair(){
-        for(int i =0;i<hand.size();i++){
-            for(int j = i+1;j<hand.size();j++){
-                if(hand[i].equals(hand[j])){
-                    return true;
-                }
+       int pairs = 0;
+        for(int i =0;i<hand.size() - 1;i++){
+            card temp = hand[i];
+            card temp2 = hand[i+1];
+            if(temp.number == temp2.number){
+                pairs++;
             }
         }
-        return false;
+        return pairs==1;
     }
-
 
     bool hasAnySuit(int value){
         for(int i = 0;i<hand.size();i++){
@@ -186,17 +213,14 @@ struct PokerHand {
         return false;
     }
 
-    void sort(){
-        for(int i = 0;i<hand.size();i++){
-            for(int j = i+1;j<hand.size();j++){
-                if(hand[i].number > hand[j].number){
-                    card temp = hand[i];
-                    hand[i] = hand[j];
-                    hand[j] = temp;
-                }
-            }
+    bool print(){
+        for(int i =0;i<this->hand.size();i++){
+            cout << "Card : " << hand[i].number << endl;
+            cout << "Suit : " << hand[i].suits << endl;
+            cout << "------------------" << endl;
         }
     }
+
 };
 
 enum class Result { Win, Loss, Tie };
@@ -209,5 +233,9 @@ Result compare (const PokerHand &player, const PokerHand &opponent) {
 }
 
 
-
-
+int main(){
+    PokerHand a("KS 2H 5C JD TD");
+    a.print();
+    cout << a.Pair();
+    return 0;
+}
