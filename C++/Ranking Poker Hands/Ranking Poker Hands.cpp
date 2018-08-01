@@ -54,6 +54,14 @@ int getNumberFromString(char number){
 }
 
 struct PokerHand {
+    vector<card> hand;
+
+    card first;
+    card second;
+    card third;
+    card fourth;
+    card fifth;
+
 
     void sort(){
         for(int i = 0;i<hand.size();i++){
@@ -67,7 +75,7 @@ struct PokerHand {
         }
     }
 
-    vector<card> hand;
+
     PokerHand (const char* pokerhand) {
         string temp = "";
         for(int i =0;i<14;i++){
@@ -87,7 +95,14 @@ struct PokerHand {
         tempo.number = getNumberFromString(pokerhand[12]);
         hand.push_back(tempo);
         this->sort();
+
+        first = hand[0];
+        second =  hand[1];
+        third = hand[2];
+        fourth = hand[3];
+        fifth = hand[4];
     }
+
 
     int getHandValue(){
 
@@ -110,37 +125,33 @@ struct PokerHand {
     }
 
     bool straighFlush(){
-
+        if(this->straight() && this->flush()){
+            return true;
+        }
     }
 
     bool fourOfAKind(){
-        int count1 =0 ;
-        int count2 = 0;
-        card temp1 = hand[0];
-        card temp2 = hand[1];
-        for (auto &i : hand) {
-            if(i.equals(temp1)){
-                count1++;
-            }
-            if(i.equals(temp2)){
-                count2++;
-            }
-        }
-        if(count1 == 4 || count2 == 4){
+      if(first.number == second.number && first.number == third.number && first.number == fourth.number && first.number != fifth.number){
+          return true;
+      }
+      if(second.number == third.number && second.number == fourth.number && second.number == fifth.number && second.number != hand[0].number){
+          return true;
+      }
+      return false;
+    }
+    
+    bool FullHouse(){
+        if(first.number == second.number && second.number != third.number && third.number == fourth.number && fourth.number == fifth.number){
             return true;
         }
-        return false;
-    }
-
-    bool FullHouse(){
-        if(this->threeOfAKind() && this->Pair()){
+        if(first.number == second.number && second.number == third.number && third.number != fourth.number && fourth.number == fifth.number){
             return true;
         }
         return false;
     }
 
     bool flush(){
-
+        //5 cards same suit
     }
 
     bool straight(){
@@ -148,39 +159,42 @@ struct PokerHand {
     }
 
     bool threeOfAKind(){
-        int count1 =0 ;
-        int count2 = 0;
-        int count3 = 0;
-        card temp1 = hand[0];
+        card temp = hand[0];
         card temp2 = hand[1];
         card temp3 = hand[2];
-        for (auto &i : hand) {
-            if(i.equals(temp1)){
-                count1++;
-            }
-            if(i.equals(temp2)){
-                count2++;
-            }
-            if(i.equals(temp3)){
-                count3++;
-            }
+       if(temp.number == hand[1].number && temp.number == hand[2].number && temp.number != hand[3].number && temp.number != hand[4].number){
+            return true;
         }
-        if(count1 == 3 || count2 == 3 || count3 == 3){
+
+        if(temp2.number == hand[2].number && temp2.number == hand[3].number && temp2.number != hand[4].number && temp2.number != hand[0].number){
+            return true;
+        }
+        if(temp3.number == hand[3].number && temp3.number == hand[4].number && temp3.number != hand[0].number && temp3.number != hand[1].number){
             return true;
         }
         return false;
     }
 
     bool twoPair(){
-        int pairs = 0;
-        for(int i =0;i<hand.size() - 1;i++){
+
+        if(this->threeOfAKind()){
+            return false;
+        }
+
+        int nPairs = 0;
+        for(int i =0;i<hand.size();i++){
             card temp = hand[i];
             card temp2 = hand[i+1];
-            if(temp.number == temp2.number){
-                pairs++;
+
+            if(temp.number == temp2.number && i + 2 >= hand.size()) {
+                nPairs++;
             }
+            else if(temp.number == temp2.number && i+2< hand.size() && !(temp2.number == hand[i+2].number)){
+                nPairs++;
+            }
+
         }
-        return pairs==1;
+        return nPairs==2;
     }
 
     bool Pair(){
@@ -221,6 +235,36 @@ struct PokerHand {
         }
     }
 
+    void evaluateHand(){
+        if(this->FullHouse()){
+            cout << "This hand is a FullHouse!" << endl;
+        }
+        else if(this->threeOfAKind()){
+            cout << "This hand is a Three of a kind" << endl;
+        }
+        else if(this->fourOfAKind()){
+            cout << "This hand is a Four of a kind!" << endl;
+        }
+        else if(this->royalFlush()){
+            cout << "This hand is a Royal Flush! YOU WIN!" << endl;
+        }
+        else if(this->straighFlush()){
+            cout << "This hand is a straight flush! OWO" << endl;
+        }
+        else if(this->flush()){
+            cout << "This hand is a flush " << endl;
+        }
+        else if(this->straight()){
+            cout << "This hand is a straight" << endl;
+        }
+        else if(this->twoPair()){
+            cout << "This hand is a two pair" << endl;
+        }
+        else if(this->Pair()){
+            cout << "This hand is a Pair" << endl;
+        }
+    }
+
 };
 
 enum class Result { Win, Loss, Tie };
@@ -234,8 +278,8 @@ Result compare (const PokerHand &player, const PokerHand &opponent) {
 
 
 int main(){
-    PokerHand a("KS 2H 5C JD TD");
+    PokerHand a("2S 2H 3C 3D 3D");
     a.print();
-    cout << a.Pair();
+    a.evaluateHand();
     return 0;
 }
