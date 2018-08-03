@@ -4,6 +4,7 @@
 #include "string"
 
 using namespace std;
+
 enum class Result { Win, Loss, Tie };
 
 struct card{
@@ -55,18 +56,18 @@ int getNumberFromString(char number){
 }
 
 struct PokerHand {
-    static vector<card> hand;
+    vector<card> hand;
 
-    static card first;
-    static card second;
-    static card third;
-    static card fourth;
-    static card fifth;
-    static int tieBreak;
-    static int tieBreak2;
-    static int tieBreak3;
-    static int tieBreak4;
-    static int tieBreak5;
+    card first;
+    card second;
+    card third;
+    card fourth;
+    card fifth;
+    int tieBreak;
+    int tieBreak2;
+    int tieBreak3;
+    int tieBreak4;
+    int tieBreak5;
 
     void sort(){
         for(int i = 0;i<hand.size();i++){
@@ -108,7 +109,7 @@ struct PokerHand {
     }
 
 
-    static int getHandValue() {
+    int getHandValue() {
         if(FullHouse()){
             return 6;
         }
@@ -138,44 +139,44 @@ struct PokerHand {
         }
     }
 
-    static bool royalFlush(){
+    bool royalFlush(){
 
         if(has(10, 0) && has(11, 0) && has(12, 0) && has(13, 0) && has(14, 0) ){
-             tieBreak = 100;
-             tieBreak2 = 100;
-             tieBreak3 = 100;
-             tieBreak4 = 100;
-             tieBreak5 = 100;
+            tieBreak = 100;
+            tieBreak2 = 100;
+            tieBreak3 = 100;
+            tieBreak4 = 100;
+            tieBreak5 = 100;
             return true;
         }
         if(has(10, 1) && has(11, 1) && has(12, 1) && has(13, 1) && has(14, 1) ){
-             tieBreak = 100;
-             tieBreak2 = 100;
-             tieBreak3 = 100;
-             tieBreak4 = 100;
-             tieBreak5 = 100;
+            tieBreak = 100;
+            tieBreak2 = 100;
+            tieBreak3 = 100;
+            tieBreak4 = 100;
+            tieBreak5 = 100;
             return true;
         }
         if(has(10, 2) && has(11, 2) && has(12, 2) && has(13, 2) && has(14, 2) ){
-             tieBreak = 100;
-             tieBreak2 = 100;
-             tieBreak3 = 100;
-             tieBreak4 = 100;
-             tieBreak5 = 100;
+            tieBreak = 100;
+            tieBreak2 = 100;
+            tieBreak3 = 100;
+            tieBreak4 = 100;
+            tieBreak5 = 100;
             return true;
         }
         if(has(10, 3) && has(11, 3) && has(12, 3) && has(13, 3) && has(14, 3) ){
-             tieBreak = 100;
-             tieBreak2 = 100;
-             tieBreak3 = 100;
-             tieBreak4 = 100;
-             tieBreak5 = 100;
+            tieBreak = 100;
+            tieBreak2 = 100;
+            tieBreak3 = 100;
+            tieBreak4 = 100;
+            tieBreak5 = 100;
             return true;
         }
         return false;
     }
 
-    static bool straighFlush(){
+    bool straighFlush(){
         if(straight() && flush()){
             tieBreak = fifth.number;
             tieBreak2 = fourth.number;
@@ -187,7 +188,7 @@ struct PokerHand {
     }
 
 
-    static bool fourOfAKind(){
+    bool fourOfAKind(){
         if(first.number == second.number && first.number == third.number && first.number == fourth.number && first.number != fifth.number){
             tieBreak = first.number;
             tieBreak2 = fifth.number;
@@ -207,7 +208,7 @@ struct PokerHand {
         return false;
     }
 
-    static bool FullHouse(){
+    bool FullHouse(){
         if(first.number == second.number && second.number != third.number && third.number == fourth.number && fourth.number == fifth.number){
             tieBreak = third.number;
             tieBreak2 = first.number;
@@ -227,7 +228,7 @@ struct PokerHand {
         return false;
     }
 
-    static bool flush(){
+    bool flush(){
         //5 cards same suit
 
         if(first.suits == second.suits && second.suits == third.suits && third.suits == fourth.suits && fourth.suits == fifth.suits){
@@ -241,7 +242,7 @@ struct PokerHand {
         return false;
     }
 
-    static bool straight(){
+    bool straight(){
         if(first.number +1 == second.number && second.number +1 == third.number && third.number+1 == fourth.number && fourth.number +1 == fifth.number){
             tieBreak = fifth.number;
             tieBreak2 = fifth.number;
@@ -261,17 +262,7 @@ struct PokerHand {
         return false;
     }
 
-    static int max(int i, int j){
-        if(i>j){
-            return i;
-        }
-        if(j>i){
-            return j;
-        }
-        return 0;
-    }
-
-    static bool threeOfAKind(){
+    bool threeOfAKind(){
         card temp = hand[0];
         card temp2 = hand[1];
         card temp3 = hand[2];
@@ -303,41 +294,84 @@ struct PokerHand {
         return false;
     }
 
-    static bool twoPair(){
-    // 22 11 0  --  11 0 22 -- 0 11 22
-        if(threeOfAKind()){
-            return false;
+    bool twoPair(){
+        // 22 11 0  --  11 0 22 -- 0 11 22
+        if(first.number == second.number && second.number != third.number && third.number != fourth.number && fourth.number == fifth.number && fifth.number != first.number){
+            tieBreak = max(first.number, fourth.number);
+            tieBreak2 = min(first.number, fourth.number);
+            tieBreak3 = third.number;
+            tieBreak4 = 100;
+            tieBreak5 = 100;
+            return true;
         }
 
-        int nPairs = 0;
-        for(int i =0;i<hand.size();i++){
-            card temp = hand[i];
-            card temp2 = hand[i+1];
-
-            if(temp.number == temp2.number && i + 2 >= hand.size()) {
-                nPairs++;
-            }
-            else if(temp.number == temp2.number && i+2< hand.size() && !(temp2.number == hand[i+2].number)){
-                nPairs++;
-            }
-
+        if(first.number != second.number && second.number == third.number && third.number != fourth.number && fourth.number == fifth.number && fifth.number != first.number){
+            tieBreak = max(second.number, fifth.number);
+            tieBreak2 = min(second.number, fifth.number);
+            tieBreak3 = first.number;
+            tieBreak4 = 100;
+            tieBreak5 = 100;
+            return true;
         }
-        return nPairs==2;
+
+        if(first.number == second.number && second.number != third.number && third.number == fourth.number && fourth.number != fifth.number && fifth.number!=first.number){
+            tieBreak = max(first.number, third.number);
+            tieBreak2 = min(first.number, third.number);
+            tieBreak3 = fifth.number;
+            tieBreak4 = 100;
+            tieBreak5 = 100;
+            return true;
+        }
+        return false;
     }
 
-    static bool Pair(){
-        int pairs = 0;
-        for(int i =0;i<hand.size() - 1;i++){
-            card temp = hand[i];
-            card temp2 = hand[i+1];
-            if(temp.number == temp2.number){
-                pairs++;
-            }
+    bool Pair(){
+        //00 1 2 3
+        //1 00 2 3
+        //1 2 00 3
+        //1 2 3 00
+
+        if(first.number == second.number && second.number != third.number && third.number != fourth.number && fourth.number != fifth.number){
+            tieBreak = first.number;
+            tieBreak2 = fifth.number;
+            tieBreak3 = fourth.number;
+            tieBreak4 = third.number;
+            tieBreak5 = 100;
+            return true;
+
         }
-        return pairs==1;
+        if(first.number != second.number && second.number == third.number && third.number != fourth.number && fourth.number != fifth.number){
+
+            tieBreak = second.number;
+            tieBreak2 = fifth.number;
+            tieBreak3 = fourth.number;
+            tieBreak4 = first.number;
+            tieBreak5 = 100;
+            return true;
+        }
+        if(first.number != second.number && second.number != third.number && third.number == fourth.number && fourth.number != fifth.number){
+            tieBreak = third.number;
+            tieBreak2 = fifth.number;
+            tieBreak3 = second.number;
+            tieBreak4 = first.number;
+            tieBreak5 = 100;
+            return true;
+
+        }
+        if(first.number != second.number && second.number != third.number && third.number != fourth.number && fourth.number == fifth.number){
+            tieBreak = fourth.number;
+            tieBreak2 = third.number;
+            tieBreak3 = second.number;
+            tieBreak4 = first.number;
+            tieBreak5 = 100;
+            return true;
+
+        }
+        return false;
+
     }
 
-    static bool has(int value, int suit){
+    bool has(int value, int suit){
         for(int i = 0;i<hand.size();i++){
             if(value == hand[i].number && suit == hand[i].suits){
                 return true;
@@ -385,41 +419,66 @@ struct PokerHand {
             cout << "This hand is a Pair" << endl;
         }
     }
-
 };
 
 
 
 
 Result compare (const PokerHand &player, const PokerHand &opponent) {
-    int playerScore = player.getHandValue();
-    int opponentScore = opponent.getHandValue();
-    if(playerScore > opponentScore){
+    PokerHand player1 = player;
+    PokerHand player2 = opponent;
+    int player1Score = player1.getHandValue();
+    int player2Score = player2.getHandValue();
+    if(player1Score > player2Score){
         return Result::Win;
     }
-    else if(opponentScore > playerScore){
+    else if(player2Score > player1Score){
         return Result::Loss;
     }
     else{
-        switch(playerScore){
-            case 1:     return player.pairTie(opponent);
-                break;
-            case 2:     return twoPairTie();
-                break;
-            case 3:     return threeKindTie();
-                break;
-            case 4:     return straightTie();
-                break;
-            case 5:     return flushTie();
-                break;
-            case 6:     return fullHouseTie();
-                break;
-            case 7:     return fourKindTie();
-                break;
-            case 8:     return straigthFlush();
-                break;
-            case 9:     return Result::Tie;
-                break;
+        if(player1.tieBreak > player2.tieBreak){
+            return Result::Win;
+        }
+        else if(player1.tieBreak < player2.tieBreak){
+            return Result::Loss;
+        }
+        else{
+            if(player1.tieBreak2 > player2.tieBreak2){
+                return Result::Win;
+            }
+            else if(player1.tieBreak2 < player2.tieBreak2){
+                return Result::Loss;
+            }
+            else{
+                if(player1.tieBreak3 > player2.tieBreak3){
+                    return Result::Win;
+                }
+                else if(player1.tieBreak3 < player2.tieBreak3){
+                    return Result::Loss;
+                }
+                else{
+                    if(player1.tieBreak4 > player2.tieBreak4){
+                        return Result::Win;
+                    }
+                    else if(player1.tieBreak4 < player2.tieBreak4){
+                        return Result::Loss;
+                    }
+                    else{
+                        if(player1.tieBreak5 > player2.tieBreak5){
+                            return Result::Win;
+                        }
+                        else if(player1.tieBreak5 < player2.tieBreak5){
+                            return Result::Loss;
+                        }
+                        else{
+                            return Result::Tie;
+                        }
+
+                    }
+
+                }
+
+            }
         }
     }
 }
@@ -427,7 +486,9 @@ Result compare (const PokerHand &player, const PokerHand &opponent) {
 
 int main(){
     PokerHand a("AS 2S 3S 4S 5S");
+    PokerHand b("AS 2S 3S 4S 5S");
     a.print();
     a.evaluateHand();
+    compare(a, b);
     return 0;
 }
