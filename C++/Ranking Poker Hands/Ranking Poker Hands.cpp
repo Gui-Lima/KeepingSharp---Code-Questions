@@ -64,6 +64,9 @@ struct PokerHand {
     static card fifth;
     static int tieBreak;
     static int tieBreak2;
+    static int tieBreak3;
+    static int tieBreak4;
+    static int tieBreak5;
 
     void sort(){
         for(int i = 0;i<hand.size();i++){
@@ -140,21 +143,33 @@ struct PokerHand {
         if(has(10, 0) && has(11, 0) && has(12, 0) && has(13, 0) && has(14, 0) ){
              tieBreak = 100;
              tieBreak2 = 100;
+             tieBreak3 = 100;
+             tieBreak4 = 100;
+             tieBreak5 = 100;
             return true;
         }
         if(has(10, 1) && has(11, 1) && has(12, 1) && has(13, 1) && has(14, 1) ){
              tieBreak = 100;
              tieBreak2 = 100;
+             tieBreak3 = 100;
+             tieBreak4 = 100;
+             tieBreak5 = 100;
             return true;
         }
         if(has(10, 2) && has(11, 2) && has(12, 2) && has(13, 2) && has(14, 2) ){
              tieBreak = 100;
              tieBreak2 = 100;
+             tieBreak3 = 100;
+             tieBreak4 = 100;
+             tieBreak5 = 100;
             return true;
         }
         if(has(10, 3) && has(11, 3) && has(12, 3) && has(13, 3) && has(14, 3) ){
              tieBreak = 100;
              tieBreak2 = 100;
+             tieBreak3 = 100;
+             tieBreak4 = 100;
+             tieBreak5 = 100;
             return true;
         }
         return false;
@@ -162,6 +177,11 @@ struct PokerHand {
 
     static bool straighFlush(){
         if(straight() && flush()){
+            tieBreak = fifth.number;
+            tieBreak2 = fourth.number;
+            tieBreak3 = third.number;
+            tieBreak4 = fourth.number;
+            tieBreak5 = fifth.number;
             return true;
         }
     }
@@ -171,11 +191,17 @@ struct PokerHand {
         if(first.number == second.number && first.number == third.number && first.number == fourth.number && first.number != fifth.number){
             tieBreak = first.number;
             tieBreak2 = fifth.number;
+            tieBreak3 = 100;
+            tieBreak4 = 100;
+            tieBreak5 = 100;
             return true;
         }
         if(second.number == third.number && second.number == fourth.number && second.number == fifth.number && second.number != first.number){
             tieBreak = second.number;
             tieBreak2 =  first.number;
+            tieBreak3 = 100;
+            tieBreak4 = 100;
+            tieBreak5 = 100;
             return true;
         }
         return false;
@@ -185,11 +211,17 @@ struct PokerHand {
         if(first.number == second.number && second.number != third.number && third.number == fourth.number && fourth.number == fifth.number){
             tieBreak = third.number;
             tieBreak2 = first.number;
+            tieBreak3 = 100;
+            tieBreak4 = 100;
+            tieBreak5 = 100;
             return true;
         }
         if(first.number == second.number && second.number == third.number && third.number != fourth.number && fourth.number == fifth.number){
             tieBreak = first.number;
             tieBreak2 = fifth.number;
+            tieBreak3 = 100;
+            tieBreak4 = 100;
+            tieBreak5 = 100;
             return true;
         }
         return false;
@@ -201,6 +233,9 @@ struct PokerHand {
         if(first.suits == second.suits && second.suits == third.suits && third.suits == fourth.suits && fourth.suits == fifth.suits){
             tieBreak = fifth.number;
             tieBreak2 = fourth.number;
+            tieBreak3 = third.number;
+            tieBreak2 = second.number;
+            tieBreak5 = first.number;
             return true;
         }
         return false;
@@ -210,11 +245,17 @@ struct PokerHand {
         if(first.number +1 == second.number && second.number +1 == third.number && third.number+1 == fourth.number && fourth.number +1 == fifth.number){
             tieBreak = fifth.number;
             tieBreak2 = fifth.number;
+            tieBreak3 = fifth.number;
+            tieBreak4 = fifth.number;
+            tieBreak5 = fifth.number;
             return true;
         }
         if(first.number == 2 && second.number == 3 && third.number == 4 && fourth.number == 5 && fifth.number == 14){
             tieBreak2 = fifth.number;
             tieBreak = fifth.number;
+            tieBreak3 = fifth.number;
+            tieBreak4 = fifth.number;
+            tieBreak5 = fifth.number;
             return true;
         }
         return false;
@@ -237,22 +278,33 @@ struct PokerHand {
         if(temp.number == hand[1].number && temp.number == hand[2].number && temp.number != hand[3].number && temp.number != hand[4].number){
             tieBreak = first.number;
             tieBreak2 = max(fourth.number, fifth.number);
+            tieBreak3 = min(fourth.number, fifth.number);
+            tieBreak4 = 100;
+            tieBreak5 = 100;
             return true;
         }
 
         if(temp2.number == hand[2].number && temp2.number == hand[3].number && temp2.number != hand[4].number && temp2.number != hand[0].number){
             tieBreak = second.number;
             tieBreak2 = max(fifth.number, first.number);
+            tieBreak3 = min(fourth.number, fifth.number);
+            tieBreak4 = 100;
+            tieBreak5 = 100;
             return true;
         }
         if(temp3.number == hand[3].number && temp3.number == hand[4].number && temp3.number != hand[0].number && temp3.number != hand[1].number){
+            tieBreak = third.number;
+            tieBreak2 = max(first.number, second.number);
+            tieBreak3 = min(first.number, second.number);
+            tieBreak4 = 100;
+            tieBreak5 = 100;
             return true;
         }
         return false;
     }
 
     static bool twoPair(){
-
+    // 22 11 0  --  11 0 22 -- 0 11 22
         if(threeOfAKind()){
             return false;
         }
