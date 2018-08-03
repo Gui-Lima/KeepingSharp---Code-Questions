@@ -137,6 +137,14 @@ struct PokerHand {
         else if(Pair()){
             return 1;
         }
+        else{
+            tieBreak = fifth.number;
+            tieBreak2 = fourth.number;
+            tieBreak3 = third.number;
+            tieBreak4 = second.number;
+            tieBreak5 = first.number;
+            return 0;
+        }
     }
 
     bool royalFlush(){
@@ -481,14 +489,4 @@ Result compare (const PokerHand &player, const PokerHand &opponent) {
             }
         }
     }
-}
-
-
-int main(){
-    PokerHand a("AS 2S 3S 4S 5S");
-    PokerHand b("AS 2S 3S 4S 5S");
-    a.print();
-    a.evaluateHand();
-    compare(a, b);
-    return 0;
 }
