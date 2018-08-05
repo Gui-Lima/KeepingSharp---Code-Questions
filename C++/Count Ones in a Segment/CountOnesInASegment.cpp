@@ -27,9 +27,12 @@ using namespace std;
  *  We will use this to count the zeros
  */
 
-long long pattern(long long num, int cipher)
-
-{
+long long pattern(long long num, int cipher) {
+/*  Here we get all the ones that happened before the current pattern,
+ *  basically we just have to discover the size of the pattern, that we now by 2^current column
+ *  and how many patterns occurred until now, that we know by dividing the num by the current column(+1 couse 0) Universe explodes
+ *
+ */
 
     long long bit = 1 << cipher;
 
@@ -41,9 +44,12 @@ long long pattern(long long num, int cipher)
 
 
 
-long long restOfBinary(long long num, int cipher)
-
-{
+long long restOfBinary(long long num, int cipher) {
+       /* First we ask where the number (num) is on the current pattern
+        * As in '9' in the second column(1) is on the second zero of the pattern.(00 11 00)
+        * So this function should return 0, since there is no ones in the current pattern
+        * As in '12' in the fourth column(3) is on the fifth one of the pattern(00000000 11111111)
+        */
 
     long long bit = 1 << cipher;
 
@@ -103,7 +109,7 @@ int main(void)
 
 {
 
-    cout << countOnes(4, 8) << endl;
+    cout << countOnes(4, 7) << endl;
 
     return 0;
 
