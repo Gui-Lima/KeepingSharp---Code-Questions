@@ -10,7 +10,7 @@ def dM(n):
 def thirt(n):
 #multiplicar, da direita pra esquerda de n, digitos por 1, 10, 9, 12, 3, 4
 #somar essa putaria
-#Repete isso até o número parar de mudar
+#Repete isso ate o numero parar de mudar
 	loucura(n)
 
 def loucura(n):
