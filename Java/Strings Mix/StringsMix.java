@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 public class Mixing{
-   
+
     public static String mix(String s1, String s2){
         //"2:nnnnn/1:aaaa/1:hhh/2:mmm/2:yyy/2:dd/2:ff/2:ii/2:rr/=:ee/=:ss"
 
@@ -39,16 +39,17 @@ public class Mixing{
                  al.add(temp);
             }
         }
-        String cu[] = new String[al.size()];
-        cu = (String[]) al.toArray(cu);
-        cu = sort(cu);
 
-        for(int i =0;i<cu.length;i++){
-            result = result.concat(cu[i]);
+        String tempArray[] = new String[al.size()];
+        tempArray = (String[]) al.toArray(tempArray);
+        tempArray = sort(tempArray);
+
+        for(int i =0;i<tempArray.length;i++){
+            result = result.concat(tempArray[i]);
         }
 
         String realResult = "";
-        for(int i =0;i<result.length();i++){
+        for(int i =0;i<result.length() - 1;i++){
             realResult = (String) realResult.concat(String.valueOf(result.charAt(i)));
         }
 
@@ -57,8 +58,18 @@ public class Mixing{
 
     public static String[] sort(String[] arr){
         for ( int i =0;i<arr.length;i++){
-            for ( int  j = 0;j<arr.length ; j++){
-                if(arr[i].length() > arr[j].length()){
+            for ( int  j = i;j<arr.length ; j++){
+                if(arr[i].length() < arr[j].length()){
+                    String temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                }
+                if(arr[i].length() == arr[j].length() &&  arr[i].charAt(0) != arr[j].charAt(0) && (int) arr[i].charAt(0) > (int )arr[j].charAt(0)){
+                    String temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                }
+                if(arr[i].length() == arr[j].length() &&  arr[i].charAt(0) == arr[j].charAt(0) && (int) arr[i].charAt(2) > (int) arr[j].charAt(2)){
                     String temp = arr[i];
                     arr[i] = arr[j];
                     arr[j] = temp;
