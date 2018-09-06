@@ -2,7 +2,7 @@ def song_decoder(song):
     # WUBWUBWUBAWUBWUBWUBBWUBWUBWUBC
 
     newSong = song.replace("WUB", " ")
-
+    
     for i in range(len(newSong)):
         newSong = newSong.replace("  ", " ")
     
