@@ -3,6 +3,7 @@ module Snail where
 
     snail :: [[Int]] -> [Int]
     snail [[]] = []
+    snail [] = []
     snail n 
             | length n == 1 = getFirstArray n
             | otherwise =  values ++ snail newArray
@@ -11,6 +12,7 @@ module Snail where
     
     getFirstArray :: [[Int]] -> [Int]
     getFirstArray [[]] = []
+    getFirstArray [] = []
     getFirstArray n@(x:xs) = x
 
     getLastElMidArrays :: [[Int]] -> Int -> [Int]
@@ -22,19 +24,23 @@ module Snail where
 
     getLastArrayReverse :: [[Int]] -> [Int]
     getLastArrayReverse [[]] = []
+    getLastArrayReverse [] = []
     getLastArrayReverse n@(x:xs) = reverse (last n)
 
     getFirstElMidArrays :: [[Int]] -> Int -> [Int]
     getFirstElMidArrays [[]] _ = []
+    getFirstElMidArrays [] _ = []
     getFirstElMidArrays n@(x:xs) m
                                     | m < 1 = []
                                     | otherwise = n !! m !! 0 : getFirstElMidArrays n (m-1)
 
     modifyArray :: [[Int]] -> [Int] ->[[Int]]
     modifyArray [[]] _ = []
+    modifyArray [] _ = []
     modifyArray n@(x:xs) m =  splitEvery (length n - 2) ((unifyArray n) \\ m)
-    
+
     unifyArray :: [[Int]] -> [Int]
+    unifyArray [] = []
     unifyArray [[]] = []
     unifyArray n@(x:xs) 
                             | length xs == 0 = x
