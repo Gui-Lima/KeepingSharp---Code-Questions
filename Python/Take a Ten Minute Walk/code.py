@@ -16,4 +16,4 @@ def isValidWalk(walk):
         return True
     else:
         return False
-    
+        
